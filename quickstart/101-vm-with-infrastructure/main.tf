@@ -87,6 +87,21 @@ resource "azurerm_storage_account" "my_storage_account" {
   resource_group_name      = azurerm_resource_group.rg.name
   account_tier             = "Standard"
   account_replication_type = "LRS"
+  resource "azurerm_storage_account" "my_storage_account" {
+  name                     = "diag${random_id.random_id.hex}"
+  location                 = azurerm_resource_group.rg.location
+  resource_group_name      = azurerm_resource_group.rg.name
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  encryption {
+    key_source = "Microsoft.Keyvault"
+    key_vault_properties {
+      key_name     = "your-key-name"  # Remplacez par le nom de la clé dans le Key Vault
+      key_vault_uri = "https://your-key-vault-name.vault.azure.net"  # Remplacez par l'URI du Key Vault
+    }
+  }
+}
 }
 
 # Create virtual machine
